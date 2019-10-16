@@ -1,10 +1,10 @@
 TARGET = project
 WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla 
-GCC = g++ -std=c99 -g $(WARNING) $(ERROR)
+GCC = g++ -std=c++17 -g $(WARNING) $(ERROR)
 
-SRCS = main.cpp
-OBJS = $(SRCS:%.c=%.o)
+SRCS = main.cpp 
+OBJS = $(SRCS:%.cpp=%.o)
 
 $(TARGET): $(OBJS)
 	$(GCC) $(OBJS) -o $(TARGET)
@@ -15,4 +15,4 @@ test1: $(TARGET)
 	./project interpreter_input.smp
 
 clean: 
-	rm -f split *.b $(TARGET) $(OBJS)
+	rm -f split $(TARGET) $(OBJS)

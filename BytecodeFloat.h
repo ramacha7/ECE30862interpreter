@@ -5,4 +5,5 @@ public:
 	BytecodeFloat();
 	virtual ~BytecodeFloat();
 	BytecodeFloat(Type type, float value);
+	float converttoFloat(char * arr, int pc);
 }

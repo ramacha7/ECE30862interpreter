@@ -1,6 +1,6 @@
 enum Type{
-	Char = 1;
-	Int = 4;
-	Short = 2;
-	Float = 4;
-}
+	int CHAR = 1;
+	int Int = 4;
+	int Short = 2;
+	int Float = 4;
+};
