@@ -12,16 +12,19 @@ int main(int argc, char ** argv)
     }
     f1.seekg(0,ios::end);
     size_t len = f1.tellg();
-    unsigned char arr[len];
+    unsigned char mem[len]; // changed arr to mem
     f1.seekg(0,ios::beg);
-    f1.read((char*)arr,len);
+    f1.read((char*)mem,len);
     f1.close();
 
     int i = 0;
     for(int i = 0; i < len; ++i)
     {
-        cout<< +arr[i] << endl;
+        cout<< +mem[i] << endl;
     } 
+	
+	// adding data structures below
+	// unsure if they should actually be in main or not...
 
     return EXIT_SUCCESS;
 }
