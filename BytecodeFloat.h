@@ -1,6 +1,7 @@
 #include "Type.h"
+#include "Bytecode.h"
 
-class BytecodeFloat{
+class BytecodeFloat : public Bytecode{
 public:
 	BytecodeFloat();
 	virtual ~BytecodeFloat();

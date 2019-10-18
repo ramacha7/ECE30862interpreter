@@ -1,6 +1,7 @@
 #include "Type.h"
+#include "Bytecode.h"
 
-class BytecodeShort{
+class BytecodeShort : public Bytecode{
 public:
 	BytecodeShort();
 	virtual ~BytecodeShort();

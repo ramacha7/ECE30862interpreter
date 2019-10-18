@@ -1,6 +1,7 @@
 #include "Type.h"
+#include "Bytecode.h"
 
-class BytecodeChar{
+class BytecodeChar : public Bytecode{
 public:
 	BytecodeChar();
 	virtual ~BytecodeChar();
