@@ -1,6 +1,6 @@
 #include "Case.h"
 
-void byteSwitch(unsigned char code,vector<Bytecode> rstack,int pc,int sp,unsigned char mem){
+byteSwitch(unsigned char code){
 	switch(code){
 		case 132:
 			// convert
@@ -115,7 +115,7 @@ void byteSwitch(unsigned char code,vector<Bytecode> rstack,int pc,int sp,unsigne
 	}
 }
 
-void cmpe(){
+cmpe(){
 	rstack[sp-1] = rstack[sp-1] == rstack[sp];
 	sp--;
 }
