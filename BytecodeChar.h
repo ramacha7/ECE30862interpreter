@@ -1,9 +1,10 @@
 #include "Type.h"
-#include "Bytecode.h"
+#include "Datatype.h"
 
-class BytecodeChar : public Bytecode{
+class BytecodeChar : public Datatype{
 public:
 	BytecodeChar();
 	virtual ~BytecodeChar();
 	BytecodeChar(Type type, char value);
-}
+	char converttoChar(char * arr, int pc);
+};

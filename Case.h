@@ -1,2 +1,0 @@
-
-byteSwitch(unsigned char code);

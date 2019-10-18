@@ -1,9 +1,10 @@
 #include "Type.h"
-#include "Bytecode.h"
+#include "Datatype.h"
 
-class BytecodeFloat : public Bytecode{
+class BytecodeFloat : public Datatype{
 public:
 	BytecodeFloat();
 	virtual ~BytecodeFloat();
 	BytecodeFloat(Type type, float value);
-}
+	float converttoFloat(char * arr, int pc);
+};
