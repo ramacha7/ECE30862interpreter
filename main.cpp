@@ -17,6 +17,13 @@ int main(int argc, char ** argv)
     f1.read((char*)mem,len);
     f1.close();
 
+    int sp = 0;         //stackpointer
+    int pc = 0;        // program counter
+    int fpsp = 0;
+    vector<Bytecode> rstack;        //runtime stack
+    vector<Bytecode> fstack;         // frame stack
+     
+
     int i = 0;
     for(int i = 0; i < len; ++i)
     {

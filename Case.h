@@ -1,2 +1,2 @@
 
-byteSwitch(unsigned char code);
+void byteSwitch(unsigned char code,vector<Bytecode> rstack,int pc,int sp,unsigned char mem);
