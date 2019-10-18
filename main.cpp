@@ -1,32 +1,32 @@
 #include <iostream>
 #include <fstream>
-#include "Bytecode.h"
+//#include "Bytecode.h"
+#include <vector>
 
 using namespace std;
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
-    ifstream f1("interpreter_input.smp");
-    if(f1 == NULL)
-    {
-        cout<<"ERROR"<<endl;
-        return EXIT_FAILURE;
-    }
-    f1.seekg(0,ios::end);
-    size_t len = f1.tellg();
-    vector<char> mem; // changed arr to mem
-    f1.seekg(0,ios::beg);
-    f1.read((char*)mem,len);
-    f1.close();
-
-    int i = 0;
-    for(int i = 0; i < len; ++i)
-    {
-        cout<< +mem[i] << endl;
-    } 
+	ifstream file("interpreter_input.smp", ios::binary);
 	
-	// adding data structures below
-	// unsure if they should actually be in main or not...
+	file.unsetf(ios::skipws);
+	streampos fileSize;
+	file.seekg(0, ios::end);
+	fileSize = file.tellg();
+	file.seekg(0, ios::beg);
 
-    return EXIT_SUCCESS;
+	cout << "size:" << fileSize << endl;
+
+	vector<unsigned char> mem;
+	mem.reserve(fileSize);
+
+	mem.insert(mem.begin(), istreambuf_iterator<char>(file), istreambuf_iterator<char>());
+
+	int i = 0;
+	for (int i = 0; i < fileSize; ++i)
+	{
+		cout << +mem[i] << endl;
+	}
+
+	return EXIT_SUCCESS;
 }
