@@ -1,10 +1,13 @@
+#ifndef _bytecode_h_
+#define _bytecode_h_
+
 #include <vector>
 #include "BytecodeInt.h"
 using namespace std;
 
 class Bytecode{
 public:
-	enum Type{Char,Short,Int,Float};
+	
 	Bytecode();
 	Bytecode(vector<unsigned char> mem,int size);
 	virtual ~Bytecode();
@@ -18,5 +21,9 @@ public:
     vector<Bytecode*> rstack;        //runtime stack
     vector<int> fstack;         // frame stack
 
-	void pushi(BytecodeInt B);
+	int converttoInt(vector<unsigned char> arr, int pc);
+
+	void pushi(BytecodeInt *B);
 };
+
+#endif 

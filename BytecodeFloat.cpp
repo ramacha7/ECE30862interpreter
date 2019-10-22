@@ -2,9 +2,9 @@
 
 BytecodeFloat::BytecodeFloat(){}
 BytecodeFloat::~BytecodeFloat(){}
-BytecodeFloat::BytecodeFloat(Type type, float value){
-	Type type = type;
-	float value = value;
+BytecodeFloat::BytecodeFloat(Type typ, float val){
+	type = typ;
+	value = val;
 }
 
 float BytecodeFloat::converttoFloat(char * arr, int pc)

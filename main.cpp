@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Bytecode.h"
+#include "Datatype.h"
 #include <vector>
 
 using namespace std;
@@ -22,11 +23,13 @@ int main(int argc, char** argv)
 
 	mem.insert(mem.begin(), istreambuf_iterator<char>(file), istreambuf_iterator<char>());
 
-	int i = 0;
+	file.close();
+
+	/*int i = 0;
 	for (int i = 0; i < fileSize; ++i)
 	{
 		cout << +mem[i] << endl;
-	}
+	}*/
 
 	Bytecode * bytecode = new Bytecode(mem,fileSize);
 

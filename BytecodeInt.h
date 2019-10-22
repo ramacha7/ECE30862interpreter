@@ -1,6 +1,10 @@
-#include "Type.h"
+#ifndef _bytecodeint_h_
+#define _bytecodeint_h_
+
+//#include "Type.h"
 #include "Datatype.h"
 #include <vector>
+//#include "Bytecode.h"
 
 using namespace std;
 
@@ -12,6 +16,7 @@ public:
 
 	BytecodeInt();
 	virtual ~BytecodeInt();
-	BytecodeInt(Type type, int value);
-	int converttoInt(vector<unsigned char> arr, int pc);
+	BytecodeInt(Type typ, int val);
 };
+
+#endif

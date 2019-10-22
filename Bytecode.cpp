@@ -1,6 +1,5 @@
 #include "Bytecode.h"
 #include "Datatype.h"
-#include "Type.h"
 #include <iostream>
 #include "BytecodeInt.h"
 
@@ -35,6 +34,13 @@ void Bytecode::interpreter(int size)
 	}
 
 }
+
+int Bytecode::converttoInt(vector<unsigned char> arr, int pc)
+{
+	int i = (int)(arr[pc + 1] ^ (arr[pc + 2] << 8) ^ (arr[pc + 3] << 16) ^ (arr[pc + 4] << 24));
+	return i;
+}
+
 int Bytecode::byteSwitch(int code,int index){
 	switch(code){
 		// case 132:
@@ -68,10 +74,11 @@ int Bytecode::byteSwitch(int code,int index){
 		// 	break;
 		case 70:
 			int data = converttoInt(mem,index);
-			cout<<data<<endl;
-			return 4;
-			//BytecodeInt b = new BytecodeInt(Int,data);
-			//pushi(b); // push int
+			cout<<"converted to:" <<data<<endl;
+			Datatype::Type t = Datatype::Int;
+			BytecodeInt *b = new BytecodeInt(t, data);
+			pushi(b); // push int
+			return 5;
 			break;
 		// case 71:
 		// 	pushf(); // push float
@@ -154,7 +161,7 @@ int Bytecode::byteSwitch(int code,int index){
 	}
 }
 
-void Bytecode::pushi(BytecodeInt B)
+void Bytecode::pushi(BytecodeInt *B)
 {
-
+	//this->mem.push_back(B);
 }

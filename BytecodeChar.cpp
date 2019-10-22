@@ -2,9 +2,9 @@
 
 BytecodeChar::BytecodeChar(){}
 BytecodeChar::~BytecodeChar(){}
-BytecodeChar::BytecodeChar(Type type, char value){
-	Type type = type;
-	char value = value;
+BytecodeChar::BytecodeChar(Type typ, char val){
+	type = typ;
+	value = val;
 }
 char BytecodeChar::converttoChar(char * arr, int pc)
 {

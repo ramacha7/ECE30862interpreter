@@ -2,9 +2,9 @@
 
 BytecodeShort::BytecodeShort(){}
 BytecodeShort::~BytecodeShort(){}
-BytecodeShort::BytecodeShort(Type type, short value){
-	Type type = type;
-	short value = value;
+BytecodeShort::BytecodeShort(Type typ, short val){
+	type = typ;
+	value = val;
 }
 
 short BytecodeShort::converttoShort(char * arr, int pc)
