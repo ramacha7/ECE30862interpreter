@@ -3,7 +3,7 @@ WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla 
 GCC = g++ -std=c++17 -g $(WARNING) $(ERROR)
 
-SRCS = main.cpp 
+SRCS = main.cpp Bytcode.cpp BytecodeInt.cpp BytecodeFloat.cpp BytecodeShort.cpp BytecodeChar.cpp Datatype.cpp
 OBJS = $(SRCS:%.cpp=%.o)
 
 $(TARGET): $(OBJS)

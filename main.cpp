@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-//#include "Bytecode.h"
+#include "Bytecode.h"
 #include <vector>
 
 using namespace std;
@@ -28,5 +28,8 @@ int main(int argc, char** argv)
 		cout << +mem[i] << endl;
 	}
 
+	Bytecode * bytecode = new Bytecode(mem,fileSize);
+
+	//bytecode->interpreter(fileSize);
 	return EXIT_SUCCESS;
 }
