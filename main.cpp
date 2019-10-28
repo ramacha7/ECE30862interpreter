@@ -33,6 +33,5 @@ int main(int argc, char** argv)
 
 	Bytecode * bytecode = new Bytecode(mem,fileSize);
 
-	//bytecode->interpreter(fileSize);
 	return EXIT_SUCCESS;
 }

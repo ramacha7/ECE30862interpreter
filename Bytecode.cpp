@@ -1,7 +1,7 @@
 #include "Bytecode.h"
 #include "Datatype.h"
 #include <iostream>
-#include "BytecodeInt.h"
+#include <vector>
 
 using namespace std;
 
@@ -22,7 +22,7 @@ Bytecode::Bytecode(vector<unsigned char> arr,int size)
 void Bytecode::interpreter(int size)
 {
 	int i = 0;
-	size = 4;
+	//size = 4;
 	int offset = 0;
 	while(i < size)
 	{
@@ -30,7 +30,8 @@ void Bytecode::interpreter(int size)
 		offset = byteSwitch(code,i);
 
 		i += offset;
-		pc += offset;		
+		pc += offset;	
+		printstack();
 	}
 
 }
@@ -73,11 +74,8 @@ int Bytecode::byteSwitch(int code,int index){
 		// 	pushs(); // push short
 		// 	break;
 		case 70:
-			int data = converttoInt(mem,index);
-			cout<<"converted to:" <<data<<endl;
 			Datatype::Type t = Datatype::Int;
-			BytecodeInt *b = new BytecodeInt(t, data);
-			pushi(b); // push int
+			pushi(t, index); // push int
 			return 5;
 			break;
 		// case 71:
@@ -158,10 +156,25 @@ int Bytecode::byteSwitch(int code,int index){
 		// case 0:
 		// 	halt(); // terminate the program
 		// 	break;
+
 	}
+	return 1;
 }
 
-void Bytecode::pushi(BytecodeInt *B)
+void Bytecode::pushi(Datatype::Type t, int index)
 {
-	//this->mem.push_back(B);
+	int data = converttoInt(mem, index);
+	cout << "converted to: " << data << endl;
+	Datatype* d = new Datatype(t, data);
+	rstack.push_back(d);
+}
+
+void Bytecode::printstack() {
+	/*for (vector<Datatype>::const_iterator it = rstack.begin(); it != rstack.end(); ++it) {
+		cout << it->int_value << endl;
+	}*/
+	for (int i = 0; i < rstack.size(); i++) {
+		Datatype d = *rstack[i];
+		cout << d.int_value << endl;
+	}
 }

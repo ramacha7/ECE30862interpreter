@@ -2,7 +2,8 @@
 #define _bytecode_h_
 
 #include <vector>
-#include "BytecodeInt.h"
+#include "Datatype.h"
+
 using namespace std;
 
 class Bytecode{
@@ -18,12 +19,14 @@ public:
 	int sp;         //stackpointer
     int pc;        // program counter
     int fpsp;
-    vector<Bytecode*> rstack;        //runtime stack
+    vector<Datatype*> rstack;        //runtime stack
     vector<int> fstack;         // frame stack
 
 	int converttoInt(vector<unsigned char> arr, int pc);
 
-	void pushi(BytecodeInt *B);
+	void pushi(Datatype::Type t, int index);
+
+	void printstack();
 };
 
 #endif 
