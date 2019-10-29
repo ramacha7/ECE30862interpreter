@@ -22,11 +22,49 @@ public:
     vector<Datatype*> rstack;        //runtime stack
     vector<int> fstack;         // frame stack
 
-	int converttoInt(vector<unsigned char> arr, int pc);
+	int convertToInt(vector<unsigned char> arr, int pc);
+	float convertToFloat(vector<unsigned char> arr, int pc);
+	short convertToShort(vector<unsigned char> arr, int pc);
+	char convertToChar(vector<unsigned char> arr, int pc);
 
-	void pushi(Datatype::Type t, int index);
+	void printstack(); // delete later
 
-	void printstack();
+	void cmpe(int index);
+	void cmplt(int index);
+	void cmpgt(int index);
+	void jmp(int index);
+	void jmpc(int index);
+	void call(int index);
+	void ret(int index);
+	void pushc(int index);
+	void pushs(int index);
+	void pushi(int index);
+	void pushf(int index);
+	void pushvc(int index);
+	void pushvs(int index);
+	void pushvi(int index);
+	void pushvf(int index);
+	void popm(int index);
+	void popv(int index); 
+	void popa(int index);
+	void peekc(int index);
+	void peeks(int index);
+	void peeki(int index);
+	void peekf(int index);
+	void pokec(int index);
+	void pokes(int index);
+	void pokei(int index);
+	void pokef(int index);
+	void swp(int index);
+	void add(int index);
+	void sub(int index);
+	void mul(int index);
+	void div(int index);
+	void printc(int index);
+	void prints(int index);
+	void printi(int index);
+	void printf(int index);
+	void halt(int index);
 };
 
 #endif 
