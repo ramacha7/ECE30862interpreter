@@ -55,15 +55,15 @@ public:
 	void pokes(int index);
 	void pokei(int index);
 	void pokef(int index);
-	void swp(int index);
-	void add(int index);
-	void sub(int index);
-	void mul(int index);
-	void div(int index);
-	void printc(int index);
-	void prints(int index);
-	void printi(int index);
-	void printf(int index);
+	void swp();
+	void add();
+	void sub();
+	void mul();
+	void div();
+	void printc();
+	void prints();
+	void printi();
+	void printf();
 	void halt(int index);
 };
 

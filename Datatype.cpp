@@ -1,7 +1,15 @@
 #include "Datatype.h"
 
-Datatype::Datatype(){}
+Datatype::Datatype(){
+	type = Int;
+	int_value = -1;
+	float_value = -1;
+	short_value = -1;
+	char_value = -1;
+}
+
 Datatype::~Datatype(){}
+
 Datatype::Datatype(Type t, int int_val) {
 	type = t;
 	int_value = int_val;
@@ -29,4 +37,8 @@ Datatype::Datatype(Type t, char char_val) {
 	float_value = -1;
 	short_value = -1;
 	char_value = char_val;
+}
+
+Datatype::Type Datatype::getType() {
+	return this->type;
 }

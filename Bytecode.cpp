@@ -5,7 +5,13 @@
 
 using namespace std;
 
-Bytecode::Bytecode(){}
+Bytecode::Bytecode(){
+	sp = -1;
+	fpsp = -1;
+	pc = 0;
+	mem.reserve(0);
+}
+
 Bytecode::~Bytecode(){}
 
 Bytecode::Bytecode(vector<unsigned char> arr,int size)
@@ -28,7 +34,6 @@ void Bytecode::interpreter(int size){
 		offset = byteSwitch(code,i);
 
 		i += offset;
-		pc += offset;	
 		printstack(); // delete later
 	}
 }
@@ -88,9 +93,11 @@ int Bytecode::byteSwitch(int code,int index){
 		 	break;
 		 case 68:
 		 	pushc(index); // push char
+			return 2;
 		 	break;
 		 case 69:
 		 	pushs(index); // push short
+			return 3;
 		 	break;
 		case 70:
 			pushi(index); // push int
@@ -98,6 +105,7 @@ int Bytecode::byteSwitch(int code,int index){
 			break;
 		 case 71:
 		 	pushf(index); // push float
+			return 5;
 		 	break;
 		 case 72:
 		 	pushvc(index); // push variable char
@@ -145,36 +153,46 @@ int Bytecode::byteSwitch(int code,int index){
 		 	pokef(index); // change float at offset
 		 	break;
 		 case 94:
-		 	swp(index); // swap top 2 stack elements
+		 	swp(); // swap top 2 stack elements
+			return 0;
 		 	break;
 		 case 100:
-		 	add(index); // add top 2 stack elements
+		 	add(); // add top 2 stack elements
+			return 0;
 		 	break;
 		 case 104:
-		 	sub(index); // subtract top 2 stack elements
+		 	sub(); // subtract top 2 stack elements
+			return 0;
 		 	break;
 		 case 108:
-		 	mul(index); // multiply top 2
+		 	mul(); // multiply top 2
+			return 0;
 		 	break;
 		 case 112:
-		 	div(index); // divide top 2
+		 	div(); // divide top 2
+			return 0;
 		 	break;
 		 case 148:
-		 	printc(index); // print char
+		 	printc(); // print char
+			return 0;
 		 	break;
 		 case 149:
-		 	prints(index); // print short
+		 	prints(); // print short
+			return 0;
 		 	break;
 		 case 150:
-		 	printi(index); // print int
+		 	printi(); // print int
+			return 0;
 		 	break;
 		 case 151:
-		 	printf(index); // print float
+		 	printf(); // print float
+			return 0;
 		 	break;
 		 case 0:
 		 	halt(index); // terminate the program
 		 	break;
 	}
+	return 0;
 }
 
 void Bytecode::cmpe(int index) {}
@@ -190,6 +208,7 @@ void Bytecode::pushc(int index) {
 	char data = convertToChar(mem, index);
 	Datatype* d = new Datatype(t, data);
 	rstack.push_back(d);
+	pc += 2;
 }
 
 void Bytecode::pushs(int index) {
@@ -197,6 +216,7 @@ void Bytecode::pushs(int index) {
 	short data = convertToShort(mem, index);
 	Datatype* d = new Datatype(t, data);
 	rstack.push_back(d);
+	pc += 3;
 }
 
 void Bytecode::pushi(int index){
@@ -205,6 +225,7 @@ void Bytecode::pushi(int index){
 	//cout << "converted to: " << data << endl;
 	Datatype* d = new Datatype(t, data);
 	rstack.push_back(d);
+	pc += 5;
 }
 
 void Bytecode::pushf(int index) {
@@ -212,6 +233,7 @@ void Bytecode::pushf(int index) {
 	float data = convertToFloat(mem, index);
 	Datatype* d = new Datatype(t, data);
 	rstack.push_back(d);
+	pc += 5;
 }
 
 void Bytecode::pushvc(int index){}
@@ -229,15 +251,117 @@ void Bytecode::pokec(int index){}
 void Bytecode::pokes(int index){}
 void Bytecode::pokei(int index){}
 void Bytecode::pokef(int index){}
-void Bytecode::swp(int index){}
-void Bytecode::add(int index){}
-void Bytecode::sub(int index){}
-void Bytecode::mul(int index){}
-void Bytecode::div(int index){}
-void Bytecode::printc(int index){}
-void Bytecode::prints(int index){}
-void Bytecode::printi(int index){}
-void Bytecode::printf(int index){}
+
+void Bytecode::swp(){
+	Datatype* tmp = rstack[sp - 1];
+	rstack[sp - 1] = rstack[sp];
+	rstack[sp] = tmp;
+}
+
+void Bytecode::add(){
+	Datatype *d1 = rstack[sp - 1];
+	Datatype *d2 = rstack[sp];
+	Datatype::Type t = d1->getType();
+	if (t == Datatype::Int) {
+		d1->int_value = d1->int_value + d2->int_value;
+	}
+	else if (t == Datatype::Char) {
+		d1->char_value = d1->char_value + d2->char_value;
+	}
+	else if (t == Datatype::Short) {
+		d1->short_value = d1->short_value + d2->short_value;
+	}
+	else {
+		d1->float_value = d1->float_value + d2->float_value;
+	}
+	sp--;
+}
+
+void Bytecode::sub(){
+	Datatype* d1 = rstack[sp - 1];
+	Datatype* d2 = rstack[sp];
+	Datatype::Type t = d1->getType();
+	if (t == Datatype::Int) {
+		d1->int_value = d1->int_value - d2->int_value;
+	}
+	else if (t == Datatype::Char) {
+		d1->char_value = d1->char_value - d2->char_value;
+	}
+	else if (t == Datatype::Short) {
+		d1->short_value = d1->short_value - d2->short_value;
+	}
+	else {
+		d1->float_value = d1->float_value - d2->float_value;
+	}
+	sp--;
+}
+
+void Bytecode::mul(){
+	Datatype* d1 = rstack[sp - 1];
+	Datatype* d2 = rstack[sp];
+	Datatype::Type t = d1->getType();
+	if (t == Datatype::Int) {
+		d1->int_value = d1->int_value * d2->int_value;
+	}
+	else if (t == Datatype::Char) {
+		d1->char_value = d1->char_value * d2->char_value;
+	}
+	else if (t == Datatype::Short) {
+		d1->short_value = d1->short_value * d2->short_value;
+	}
+	else {
+		d1->float_value = d1->float_value * d2->float_value;
+	}
+	sp--;
+}
+
+void Bytecode::div(){
+	Datatype* d1 = rstack[sp - 1];
+	Datatype* d2 = rstack[sp];
+	Datatype::Type t = d1->getType();
+	if (t == Datatype::Int) {
+		d1->int_value = d1->int_value / d2->int_value;
+	}
+	else if (t == Datatype::Char) {
+		d1->char_value = d1->char_value / d2->char_value;
+	}
+	else if (t == Datatype::Short) {
+		d1->short_value = d1->short_value / d2->short_value;
+	}
+	else {
+		d1->float_value = d1->float_value / d2->float_value;
+	}
+	sp--;
+}
+
+void Bytecode::printc(){
+	Datatype *d = rstack[sp];
+	char c = d->char_value;
+	cout << c << endl;
+	--sp;
+}
+
+void Bytecode::prints(){
+	Datatype* d = rstack[sp];
+	short s = d->short_value;
+	cout << s << endl;
+	--sp;
+}
+
+void Bytecode::printi(){
+	Datatype* d = rstack[sp];
+	int i = d->int_value;
+	cout << i << endl;
+	--sp;
+}
+
+void Bytecode::printf(){
+	Datatype* d = rstack[sp];
+	float f = d->float_value;
+	cout << f << endl;
+	--sp;
+}
+
 void Bytecode::halt(int index){}
 
 

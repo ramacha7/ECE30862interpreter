@@ -18,6 +18,8 @@ public:
 	Datatype(Type t, float float_val);
 	Datatype(Type t, short short_val);
 	Datatype(Type t, char char_val);
+
+	Type getType();
 };
 
 #endif
