@@ -25,7 +25,6 @@ Bytecode::Bytecode(vector<unsigned char> arr,int size)
 }
 
 void Bytecode::interpreter(int size){
-	size = 27;
 	while(pc < size)
 	{
 		int code = (int)mem[pc];
@@ -299,14 +298,18 @@ void Bytecode::jmp( ) {
 void Bytecode::jmpc( ) {
 	if (rstack[sp - 1]->int_value) {
 		pc = rstack[sp]->int_value;
-		sp -= 2;
-		rstack.pop_back();
-		rstack.pop_back();
 	}
-	pc++;
+	else {
+		pc++;
+	}
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
 }
 void Bytecode::call( ) {
-	fpstack[++fpsp] = sp - rstack[sp]->int_value - 1;
+	//fpstack[++fpsp] = sp - rstack[sp]->int_value - 1;
+	++fpsp;
+	fpstack.push_back(sp - rstack[sp]->int_value - 1);
 	sp--;
 	pc = rstack[sp--]->int_value;
 	rstack.pop_back();
@@ -443,6 +446,7 @@ void Bytecode::popa( ){
 		sp--;
 		rstack.pop_back();
 	}
+	pc++;
 }
 
 void Bytecode::peekc( ){

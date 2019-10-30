@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 
 	// Separate code for testing for add functionality
 
-	Bytecode * bytecode = new Bytecode(mem,27);
+	Bytecode * bytecode = new Bytecode(mem,fileSize);
 
 	//return EXIT_SUCCESS;
 	return 0;
