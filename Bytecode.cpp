@@ -27,44 +27,32 @@ Bytecode::Bytecode(vector<unsigned char> arr,int size)
 void Bytecode::interpreter(int size){
 	while(pc < size)
 	{
-		//int code = (int)mem[i];
 		int code = (int)mem[pc];
-		//offset = byteSwitch(code,i);
 		byteSwitch(code);
-		//i += offset;
 		printstack(); // delete later
 	}
 }
 
 void Bytecode::printstack() { // delete later
-	cout<<"The current stack is:"<<endl;
+	cout<<"The current stack is: ";
 	for (int i = 0; i < rstack.size(); i++) {
+		Datatype::Type t = rstack[i]->type;
 		Datatype d = *rstack[i];
-		cout << d.int_value << " ";
+		if (t == Datatype::Char) {
+			cout << d.char_value << " ";
+		}
+		else if (t == Datatype::Short) {
+			cout << d.short_value << " ";
+		}
+		else if (t == Datatype::Int) {
+			cout << d.int_value << " ";
+		}
+		else {
+			cout << d.float_value << " ";
+		}
 	}
 	cout <<endl;
 }
-
-//int Bytecode::convertToInt(vector<unsigned char> arr)
-//{
-//	int i = (int)(arr[pc + 1] ^ (arr[pc + 2] << 8) ^ (arr[pc + 3] << 16) ^ (arr[pc + 4] << 24));
-//	return i;
-//}
-//
-//float Bytecode::convertToFloat(vector<unsigned char> arr){
-//	float f = (float)(arr[pc + 1] ^ (arr[pc + 2] << 8) ^ (arr[pc + 3] << 16) ^ (arr[pc + 4] << 24));
-//	return f;
-//}
-//
-//short Bytecode::convertToShort(vector<unsigned char> arr){
-//	short s = (int)(arr[pc + 1] ^ (arr[pc + 2] << 8));
-//	return s;
-//}
-//
-//char Bytecode::convertToChar(vector<unsigned char> arr){
-//	char c = (char)(arr[pc + 1]);
-//	return c;
-//}
 
 int Bytecode::convertToInt()
 {
@@ -285,15 +273,15 @@ void Bytecode::call( ) {
 	fpstack[++fpsp] = sp - rstack[sp]->int_value - 1;
 	sp--;
 	pc = rstack[sp--]->int_value;
-	// rstack.pop_back();
-	// rstack.pop_back();
+	rstack.pop_back();
+	rstack.pop_back();
 }
 
 void Bytecode::ret( ) {
 	sp = fpstack[fpsp--];
 	pc = rstack[sp--]->int_value;
-	// fpstack.pop_back();
-	// rstack.pop_back();
+	fpstack.pop_back();
+	rstack.pop_back();
 }
 
 void Bytecode::pushc( ) {
@@ -392,29 +380,113 @@ void Bytecode::popv( ){
 	pc++;
 }
 
-void Bytecode::popa( ){} // help
+void Bytecode::popa( ){
+	int num = rstack[sp]->int_value;
+	int location = fpstack[fpsp];
+	location += 1;
+	for (int i = 0; i < num; i++) {
+		Datatype::Type t = rstack[sp - num + i]->type;
+		if (t == Datatype::Char) {
+			rstack[location + i]->type = t;
+			rstack[location + i]->char_value = rstack[sp - num + i]->char_value;
+		}
+		if (t == Datatype::Short) {
+			rstack[location + i]->type = t;
+			rstack[location + i]->short_value = rstack[sp - num + i]->short_value;
+		}
+		if (t == Datatype::Int) {
+			rstack[location + i]->type = t;
+			rstack[location + i]->int_value = rstack[sp - num + i]->int_value;
+		}
+		if (t == Datatype::Float) {
+			rstack[location + i]->type = t;
+			rstack[location + i]->float_value = rstack[sp - num + i]->float_value;
+		}
+	}
+	while (sp >= location + num) {
+		sp--;
+		rstack.pop_back();
+	}
+}
 
 void Bytecode::peekc( ){
 	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->char_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->char_value;
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->type = Datatype::Char;
 	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
 }
 
 void Bytecode::peeks( ){
 	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->short_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->short_value;
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->type = Datatype::Short;
 	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
 }
-void Bytecode::peeki( ){}
-void Bytecode::peekf( ){}
-void Bytecode::pokec( ){}
-void Bytecode::pokes( ){}
-void Bytecode::pokei( ){}
-void Bytecode::pokef( ){}
+void Bytecode::peeki( ){
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->int_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->int_value;
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->type = Datatype::Int;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
+void Bytecode::peekf( ){
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->float_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->float_value;
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->type = Datatype::Float;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
+void Bytecode::pokec( ){
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->char_value = rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->char_value;
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->type = Datatype::Char;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
+void Bytecode::pokes( ){
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->short_value = rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->short_value;
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->type = Datatype::Short;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
+void Bytecode::pokei( ){
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->int_value = rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->int_value;
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->type = Datatype::Int;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
+void Bytecode::pokef( ){
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->float_value = rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->float_value;
+	rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->type = Datatype::Float;
+	pc++;
+	sp -= 2;
+	rstack.pop_back();
+	rstack.pop_back();
+}
 
+// change this later
 void Bytecode::swp(){
 	Datatype* tmp = rstack[sp - 1];
 	rstack[sp - 1] = rstack[sp];
 	rstack[sp] = tmp;
 	pc++;
+	if (fpstack[fpsp] = sp) {
+		fpstack[fpsp] = sp - 1;
+	}
+	else if (fpstack[fpsp] = sp - 1) {
+		fpstack[fpsp] = sp;
+	}
 }
 
 void Bytecode::add(){
@@ -538,6 +610,43 @@ void Bytecode::printf(){
 }
 
 
-void Bytecode::halt( ){}
+void Bytecode::halt( ){
+	cout << "pc: " << pc << endl;
+	cout << "sp: " << sp << endl;
+	cout << "rstack: ";
+	if (rstack.size() == 0) {
+		cout << "empty" << endl;
+	}
+	else {
+		for (int i = 0; i < rstack.size(); i++) {
+			Datatype::Type t = rstack[i]->type;
+			if (t == Datatype::Char) {
+				cout << rstack[i]->char_value << " ";
+			}
+			else if (t == Datatype::Short) {
+				cout << rstack[i]->short_value << " ";
+			}
+			else if (t == Datatype::Int) {
+				cout << rstack[i]->int_value << " ";
+			}
+			else {
+				cout << rstack[i]->float_value << " ";
+			}
+		}
+		cout << endl;
+	}
+	cout << "fpsp: " << fpsp << endl;
+	cout << "fpstack: ";
+	if (fpstack.size() == 0) {
+		cout << "empty" << endl;
+	}
+	else {
+		for (int j = 0; j < fpstack.size(); j++) {
+			cout << fpstack[j] << " ";
+		}
+		cout << endl;
+	}
+	pc = mem.size();
+}
 
 
