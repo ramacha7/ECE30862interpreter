@@ -25,6 +25,7 @@ Bytecode::Bytecode(vector<unsigned char> arr,int size)
 }
 
 void Bytecode::interpreter(int size){
+	size = 27;
 	while(pc < size)
 	{
 		int code = (int)mem[pc];
@@ -34,24 +35,59 @@ void Bytecode::interpreter(int size){
 }
 
 void Bytecode::printstack() { // delete later
-	cout<<"The current stack is: ";
-	for (int i = 0; i < rstack.size(); i++) {
-		Datatype::Type t = rstack[i]->type;
-		Datatype d = *rstack[i];
-		if (t == Datatype::Char) {
-			cout << d.char_value << " ";
-		}
-		else if (t == Datatype::Short) {
-			cout << d.short_value << " ";
-		}
-		else if (t == Datatype::Int) {
-			cout << d.int_value << " ";
-		}
-		else {
-			cout << d.float_value << " ";
-		}
+	//cout<<"The current stack is: ";
+	//for (int i = 0; i < rstack.size(); i++) {
+	//	Datatype::Type t = rstack[i]->type;
+	//	Datatype d = *rstack[i];
+	//	if (t == Datatype::Char) {
+	//		cout << d.char_value << " ";
+	//	}
+	//	else if (t == Datatype::Short) {
+	//		cout << d.short_value << " ";
+	//	}
+	//	else if (t == Datatype::Int) {
+	//		cout << d.int_value << " ";
+	//	}
+	//	else {
+	//		cout << d.float_value << " ";
+	//	}
+	//}
+	//cout <<endl;
+	cout << "pc: " << pc << endl;
+	cout << "sp: " << sp << endl;
+	cout << "rstack: ";
+	if (rstack.size() == 0) {
+		cout << "empty" << endl;
 	}
-	cout <<endl;
+	else {
+		for (int i = 0; i < rstack.size(); i++) {
+			Datatype::Type t = rstack[i]->type;
+			if (t == Datatype::Char) {
+				cout << rstack[i]->char_value << " ";
+			}
+			else if (t == Datatype::Short) {
+				cout << rstack[i]->short_value << " ";
+			}
+			else if (t == Datatype::Int) {
+				cout << rstack[i]->int_value << " ";
+			}
+			else {
+				cout << rstack[i]->float_value << " ";
+			}
+		}
+		cout << endl;
+	}
+	cout << "fpsp: " << fpsp << endl;
+	cout << "fpstack: ";
+	if (fpstack.size() == 0) {
+		cout << "empty" << endl;
+	}
+	else {
+		for (int j = 0; j < fpstack.size(); j++) {
+			cout << fpstack[j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 int Bytecode::convertToInt()
