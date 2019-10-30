@@ -324,22 +324,22 @@ void Bytecode::pushf(int index) {
 // Check with TAs about whether the top most element on runtime stack will always be of int type
 void Bytecode::pushvc(int index){
 	int offsetindex = rstack[sp]->int_value;
-	rstack[sp]->char_value = rstack[fpstack[fpsp] + offsetindex + 1];
+	rstack[sp]->char_value = rstack[fpstack[fpsp] + offsetindex + 1]->char_value;
 	rstack[sp]->type = Datatype::Char;
 }
 void Bytecode::pushvs(int index){
 	int offsetindex = rstack[sp]->int_value;
-	rstack[sp]->short_value = rstack[fpstack[fpsp] + offsetindex + 1];
+	rstack[sp]->short_value = rstack[fpstack[fpsp] + offsetindex + 1]->short_value;
 	rstack[sp]->type = Datatype::Short;
 }
 void Bytecode::pushvi(int index){
 	int offsetindex = rstack[sp]->int_value;
-	rstack[sp]->int_value = rstack[fpstack[fpsp] + offsetindex + 1];
+	rstack[sp]->int_value = rstack[fpstack[fpsp] + offsetindex + 1]->int_value;
 	rstack[sp]->type = Datatype::Int;
 }
 void Bytecode::pushvf(int index){
 	int offsetindex = rstack[sp]->int_value;
-	rstack[sp]->float_value = rstack[fpstack[fpsp] + offsetindex + 1];
+	rstack[sp]->float_value = rstack[fpstack[fpsp] + offsetindex + 1]->float_value;
 	rstack[sp]->type = Datatype::Float;
 }
 
@@ -353,6 +353,8 @@ void Bytecode::popm(int index){
 	}
 }
 void Bytecode::popv(int index){
+	Datatype *d1 = rstack[sp - 1];
+	Datatype::Type t = d1->getType();
 	if (t == Datatype::Int) {
 		rstack[fpstack[fpsp]+(rstack[sp]->int_value)+1]->int_value = rstack[sp-1]->int_value;
 	}

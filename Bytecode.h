@@ -20,7 +20,7 @@ public:
     int pc;        // program counter
     int fpsp;
     vector<Datatype*> rstack;        //runtime stack
-    vector<int> fstack;         // frame stack
+    vector<int> fpstack;         // frame stack
 
 	int convertToInt(vector<unsigned char> arr, int pc);
 	float convertToFloat(vector<unsigned char> arr, int pc);
