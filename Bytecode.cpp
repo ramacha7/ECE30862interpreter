@@ -266,10 +266,35 @@ void Bytecode::cmpgt( ) {
 	pc++;
 }
 
-void Bytecode::jmp( ) {}
-void Bytecode::jmpc( ) {}
-void Bytecode::call( ) {}
-void Bytecode::ret( ) {}
+void Bytecode::jmp( ) {
+	pc = rstack[sp]->int_value;
+	sp--;
+	rstack.pop_back();
+}
+
+void Bytecode::jmpc( ) {
+	if (rstack[sp - 1]->int_value) {
+		pc = rstack[sp]->int_value;
+		sp -= 2;
+		rstack.pop_back();
+		rstack.pop_back();
+	}
+	pc++;
+}
+void Bytecode::call( ) {
+	fpstack[++fpsp] = sp - rstack[sp]->int_value - 1;
+	sp--;
+	pc = rstack[sp--]->int_value;
+	// rstack.pop_back();
+	// rstack.pop_back();
+}
+
+void Bytecode::ret( ) {
+	sp = fpstack[fpsp--];
+	pc = rstack[sp--]->int_value;
+	// fpstack.pop_back();
+	// rstack.pop_back();
+}
 
 void Bytecode::pushc( ) {
 	Datatype::Type t = Datatype::Char;
@@ -366,9 +391,18 @@ void Bytecode::popv( ){
 	sp -= 2;
 	pc++;
 }
-void Bytecode::popa( ){}
-void Bytecode::peekc( ){}
-void Bytecode::peeks( ){}
+
+void Bytecode::popa( ){} // help
+
+void Bytecode::peekc( ){
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->char_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->char_value;
+	pc++;
+}
+
+void Bytecode::peeks( ){
+	rstack[fpstack[fpsp] + rstack[sp - 1]->int_value + 1]->short_value = rstack[fpstack[fpsp] + rstack[sp]->int_value + 1]->short_value;
+	pc++;
+}
 void Bytecode::peeki( ){}
 void Bytecode::peekf( ){}
 void Bytecode::pokec( ){}
