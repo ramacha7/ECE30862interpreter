@@ -8,8 +8,9 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	ifstream file("interpreter_input.smp", ios::binary);
-	
+	//ifstream file("interpreter_input.smp", ios::binary);
+	ifstream file(argv[1], ios::binary);
+
 	file.unsetf(ios::skipws);
 	streampos fileSize;
 	file.seekg(0, ios::end);
@@ -19,19 +20,35 @@ int main(int argc, char** argv)
 	cout << "size:" << fileSize << endl;
 
 	vector<unsigned char> mem;
+	
 	mem.reserve(fileSize);
 
 	mem.insert(mem.begin(), istreambuf_iterator<char>(file), istreambuf_iterator<char>());
 
 	file.close();
 
-	/*int i = 0;
+	// mem.reserve(11);
+	// mem.push_back((unsigned char) 70);
+	// mem.push_back((unsigned char) 16);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 70);
+	// mem.push_back((unsigned char) 17);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 0);
+	// mem.push_back((unsigned char) 140);
+
 	for (int i = 0; i < fileSize; ++i)
 	{
 		cout << +mem[i] << endl;
-	}*/
+	}
 
-	Bytecode * bytecode = new Bytecode(mem,fileSize);
+	// Separate code for testing for add functionality
 
-	return EXIT_SUCCESS;
+	Bytecode * bytecode = new Bytecode(mem,11);
+
+	//return EXIT_SUCCESS;
+	return 0;
 }
