@@ -29,29 +29,11 @@ void Bytecode::interpreter(int size){
 	{
 		int code = (int)mem[pc];
 		byteSwitch(code);
-		printstack(); // delete later
+		//printstack(); // delete later
 	}
 }
 
 void Bytecode::printstack() { // delete later
-	//cout<<"The current stack is: ";
-	//for (int i = 0; i < rstack.size(); i++) {
-	//	Datatype::Type t = rstack[i]->type;
-	//	Datatype d = *rstack[i];
-	//	if (t == Datatype::Char) {
-	//		cout << d.char_value << " ";
-	//	}
-	//	else if (t == Datatype::Short) {
-	//		cout << d.short_value << " ";
-	//	}
-	//	else if (t == Datatype::Int) {
-	//		cout << d.int_value << " ";
-	//	}
-	//	else {
-	//		cout << d.float_value << " ";
-	//	}
-	//}
-	//cout <<endl;
 	cout << "pc: " << pc << endl;
 	cout << "sp: " << sp << endl;
 	cout << "rstack: ";
@@ -62,7 +44,7 @@ void Bytecode::printstack() { // delete later
 		for (int i = 0; i < rstack.size(); i++) {
 			Datatype::Type t = rstack[i]->type;
 			if (t == Datatype::Char) {
-				cout << rstack[i]->char_value << " ";
+				cout << (int)rstack[i]->char_value << " ";
 			}
 			else if (t == Datatype::Short) {
 				cout << rstack[i]->short_value << " ";
@@ -96,7 +78,10 @@ int Bytecode::convertToInt()
 }
 
 float Bytecode::convertToFloat() {
-	float f = (float)(mem[pc + 1] ^ (mem[pc + 2] << 8) ^ (mem[pc + 3] << 16) ^ (mem[pc + 4] << 24));
+	//float f = (float)(mem[pc + 1] ^ (mem[pc + 2] << 8) ^ (mem[pc + 3] << 16) ^ (mem[pc + 4] << 24));
+	float f;
+	unsigned char arr[4] = { mem[pc + 1], mem[pc + 2], mem[pc + 3],mem[pc + 4] };
+	memcpy(&f,arr,sizeof(f));
 	return f;
 }
 
@@ -634,7 +619,7 @@ void Bytecode::prints(){
 void Bytecode::printi(){
 	Datatype* d = rstack[sp];
 	int i = d->int_value;
-	cout << "The top value is :" << i << endl;
+	cout << i << endl;
 	rstack.pop_back();
 	--sp;
 	pc++;
@@ -661,7 +646,7 @@ void Bytecode::halt( ){
 		for (int i = 0; i < rstack.size(); i++) {
 			Datatype::Type t = rstack[i]->type;
 			if (t == Datatype::Char) {
-				cout << rstack[i]->char_value << " ";
+				cout << (int)rstack[i]->char_value << " ";
 			}
 			else if (t == Datatype::Short) {
 				cout << rstack[i]->short_value << " ";
