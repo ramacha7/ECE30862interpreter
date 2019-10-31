@@ -12,7 +12,8 @@ public:
 	Bytecode();
 	Bytecode(vector<unsigned char> mem,int size);
 	virtual ~Bytecode();
-	int byteSwitch(int code,int index);
+	//int byteSwitch(int code,int index);
+	void byteSwitch(int code);
 	void interpreter(int size);
 
 	vector<unsigned char> mem;
@@ -22,39 +23,43 @@ public:
     vector<Datatype*> rstack;        //runtime stack
     vector<int> fpstack;         // frame stack
 
-	int convertToInt(vector<unsigned char> arr, int pc);
-	float convertToFloat(vector<unsigned char> arr, int pc);
-	short convertToShort(vector<unsigned char> arr, int pc);
-	char convertToChar(vector<unsigned char> arr, int pc);
+	//int convertToInt(vector<unsigned char> arr, int pc);
+	//float convertToFloat(vector<unsigned char> arr, int pc);
+	//short convertToShort(vector<unsigned char> arr, int pc);
+	//char convertToChar(vector<unsigned char> arr, int pc);
+	int convertToInt();
+	float convertToFloat();
+	short convertToShort();
+	char convertToChar();
 
 	void printstack(); // delete later
 
-	void cmpe(int index);
-	void cmplt(int index);
-	void cmpgt(int index);
-	void jmp(int index);
-	void jmpc(int index);
-	void call(int index);
-	void ret(int index);
-	void pushc(int index);
-	void pushs(int index);
-	void pushi(int index);
-	void pushf(int index);
-	void pushvc(int index);
-	void pushvs(int index);
-	void pushvi(int index);
-	void pushvf(int index);
-	void popm(int index);
-	void popv(int index); 
-	void popa(int index);
-	void peekc(int index);
-	void peeks(int index);
-	void peeki(int index);
-	void peekf(int index);
-	void pokec(int index);
-	void pokes(int index);
-	void pokei(int index);
-	void pokef(int index);
+	void cmpe();
+	void cmplt();
+	void cmpgt();
+	void jmp();
+	void jmpc();
+	void call();
+	void ret();
+	void pushc();
+	void pushs();
+	void pushi();
+	void pushf();
+	void pushvc();
+	void pushvs();
+	void pushvi();
+	void pushvf();
+	void popm();
+	void popv(); 
+	void popa();
+	void peekc();
+	void peeks();
+	void peeki();
+	void peekf();
+	void pokec();
+	void pokes();
+	void pokei();
+	void pokef();
 	void swp();
 	void add();
 	void sub();
@@ -64,7 +69,7 @@ public:
 	void prints();
 	void printi();
 	void printf();
-	void halt(int index);
+	void halt();
 };
 
 #endif 
