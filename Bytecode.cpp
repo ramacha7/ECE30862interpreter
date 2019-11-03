@@ -379,6 +379,7 @@ void Bytecode::popm( ){
 	{
 		rstack.pop_back();
 		sp -= 1;
+		i++;
 	}
 	pc++;
 }
@@ -506,10 +507,10 @@ void Bytecode::swp(){
 	rstack[sp - 1] = rstack[sp];
 	rstack[sp] = tmp;
 	pc++;
-	if (fpstack[fpsp] = sp) {
+	if (fpstack[fpsp] == sp) {
 		fpstack[fpsp] = sp - 1;
 	}
-	else if (fpstack[fpsp] = sp - 1) {
+	else if (fpstack[fpsp] == sp - 1) {
 		fpstack[fpsp] = sp;
 	}
 }
