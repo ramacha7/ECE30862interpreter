@@ -26,6 +26,15 @@ testJumps: $(TARGET)
 testMath: $(TARGET)
 	./project Math.bin
 
+testPeekPoke: $(TARGET)
+	./project Peek_Poke.bin
+
+testPushPop: $(TARGET)
+	./project Push_Pop.bin
+
+testSubroutines: $(TARGET)
+	./project Subroutines.bin
+
 
 clean: 
 	rm -f split $(TARGET) $(OBJS)
