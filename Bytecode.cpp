@@ -2,6 +2,7 @@
 #include "Datatype.h"
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ void Bytecode::printstack() { // delete later
 		for (int i = 0; i < rstack.size(); i++) {
 			Datatype::Type t = rstack[i]->type;
 			if (t == Datatype::Char) {
-				cout << (int)rstack[i]->char_value << " ";
+				cout << (int)(rstack[i]->char_value) << " ";
 			}
 			else if (t == Datatype::Short) {
 				cout << rstack[i]->short_value << " ";
@@ -602,7 +603,7 @@ void Bytecode::div(){
 void Bytecode::printc(){
 	Datatype *d = rstack[sp];
 	char c = d->char_value;
-	cout << c << endl;
+	cout << (int)c << endl;
 	rstack.pop_back();
 	--sp;
 	pc++;

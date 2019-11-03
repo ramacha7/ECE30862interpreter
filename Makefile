@@ -11,14 +11,21 @@ $(TARGET): $(OBJS)
 .c.o: 
 	$(GCC)-c $*.cpp 
 
-testall: $(TARGET)
+testmain: $(TARGET)
 	./project interpreter_input.smp
 
-testsub: $(TARGET)
-	./project Individual_Test_Cases/104_sub_test.smp
+testBasics: $(TARGET)
+	./project Basics.bin
 
-testadd: $(TARGET)
-	./project Individual_Test_Cases/100_add_test.smp
+testComparisons: $(TARGET)
+	./project Comparisons.bin
+
+testJumps: $(TARGET)
+	./project Jumps.bin
+
+testMath: $(TARGET)
+	./project Math.bin
+
 
 clean: 
 	rm -f split $(TARGET) $(OBJS)
