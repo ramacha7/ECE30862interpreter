@@ -508,11 +508,13 @@ void Bytecode::swp(){
 	rstack[sp - 1] = rstack[sp];
 	rstack[sp] = tmp;
 	pc++;
-	if (fpstack[fpsp] == sp) {
-		fpstack[fpsp] = sp - 1;
-	}
-	else if (fpstack[fpsp] == sp - 1) {
-		fpstack[fpsp] = sp;
+	if (fpsp != -1) {
+		if (fpstack[fpsp] == sp) {
+			fpstack[fpsp] = sp - 1;
+		}
+		else if (fpstack[fpsp] == sp - 1) {
+			fpstack[fpsp] = sp;
+		}
 	}
 }
 
